@@ -26,3 +26,9 @@ class HDAWGChannelGroup(AWG):
 ### Measureemnt window
 > Why do we define measurement window by qupulse? Can't we just let qupulse make a pulse and directly use atsAverage for data acquisation and downsampling so that less inteference between pulse generation and date acquisation for both soft- & hardware? It is for sure handled by qupulse now to forward the position and length of measurement masks to alazar such that the card will know when to do what kinds of operation for how long time, however, it is deeply hidden in packages. Any tutorials about that?  
 > Now I'm confused by the definition and functionality of **BufferStrategy, Mask, Buffer and Operation**. It wouldn't be better to have a concrete documentation or at least doc strings for `qupulse.hardware.dacs.alazar`.  
+>> Simon: atsaverage gets the ScanlineConfiguration from the qupulse driver. Thats it. Rest is magic.    
+>> Q: what about mask?  
+>> Simon: Its all to assemble the ScanlineConfiguration, which requires masks and operations.
+
+
+
