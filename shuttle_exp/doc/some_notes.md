@@ -9,7 +9,7 @@
 
 > ### My understand:
 > Both of them should make an editable installation with a locally cloned package. However, the former command installed a pre-released version say v-0.7 independent of any changes in the package. The other one works as intended that by making an egg-link in the `site-packages` folder of a `venv` instead of installing a package, all local modification can be reloaded and used by other scripts. 
-> - ONLY tested with Jupyter Notebook in VS Code. `python 3.7.9` in a virtual environment is used.
+> - ONLY tested with Jupyter Notebook in VS Code. `python 3.7.9` in a virtual environment is used.  
 
 ## Usage
 
@@ -22,13 +22,20 @@ class HDAWGChannelGroup(AWG):
     MIN_WAVEFORM_LEN = 192
     WAVEFORM_LEN_QUANTUM = 16
 ````
+> Answer: 192 is just an empirical number for gapless playback when using `playWaveIndexed`. Regarding `WAVEFORM_LEN_QUANTUM`... may be I still need to read manual to get the answer.
 
 ### Measureemnt window
 > Why do we define measurement window by qupulse? Can't we just let qupulse make a pulse and directly use atsAverage for data acquisation and downsampling so that less inteference between pulse generation and date acquisation for both soft- & hardware? It is for sure handled by qupulse now to forward the position and length of measurement masks to alazar such that the card will know when to do what kinds of operation for how long time, however, it is deeply hidden in packages. Any tutorials about that?  
 > Now I'm confused by the definition and functionality of **BufferStrategy, Mask, Buffer and Operation**. It wouldn't be better to have a concrete documentation or at least doc strings for `qupulse.hardware.dacs.alazar`.  
 >> Simon: atsaverage gets the ScanlineConfiguration from the qupulse driver. Thats it. Rest is magic.    
 >> Q: what about mask?  
->> Simon: Its all to assemble the ScanlineConfiguration, which requires masks and operations.
+>> Simon: Its all to assemble the ScanlineConfiguration, which requires masks and operations.  
 
+### Parallel(Constant)ChannelPT:
+
+> In some early version, the ``ParallelChannlePT`` was a short-cut to `qupulse.pulses.AtomicMultiChannelPT.ParallelConstantChannelPT`. If one used to call `ParallelChannelPT` to construct pulse, just rename it during import.
+````python
+from qupulse.pulses import ParallelConstantChannelPT as ParallelChannelPT
+````
 
 
