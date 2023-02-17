@@ -16,7 +16,7 @@ from qupulse.expressions import ExpressionScalar
 from qupulse.utils import checked_int_cast
 from qupulse.pulses.pulse_template import PulseTemplate
 from qupulse.pulses.loop_pulse_template import LoopPulseTemplate
-from qupulse.pulses.parameters import Parameter, ParameterConstrainer, ParameterNotProvidedException, MappedParameter
+from qupulse.pulses.parameters import ParameterConstrainer
 from qupulse.pulses.measurement import MeasurementDefiner, MeasurementDeclaration
 
 
@@ -69,6 +69,17 @@ class RepetitionPulseTemplate(LoopPulseTemplate, ParameterConstrainer, Measureme
         self._repetition_count = repetition_count
 
         self._register(registry=registry)
+
+    def with_repetition(self, repetition_count: Union[int, str, ExpressionScalar]) -> 'PulseTemplate':
+        if self.identifier:
+            return RepetitionPulseTemplate(self, repetition_count)
+        else:
+            return RepetitionPulseTemplate(
+                self.body,
+                self.repetition_count * repetition_count,
+                parameter_constraints=self.parameter_constraints,
+                measurements=self.measurement_declarations
+            )
 
     @property
     def repetition_count(self) -> ExpressionScalar:
